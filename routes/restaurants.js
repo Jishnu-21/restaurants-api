@@ -1,12 +1,12 @@
 const express = require('express')
-const { getAllRestaurants,createRestaurants, getRestaurant, editRestaurant,deleteRestaurant } = require('../controllers/restaurantController')
+const { getAllRestaurants,createRestaurants, getRestaurant,deleteRestaurant, updateRestaurant } = require('../controllers/restaurantController')
 const router = express.Router()
 
 
 router.get('/',getAllRestaurants)
 router.post('/',createRestaurants)
 router.get('/:id',getRestaurant)
-router.put('/:id',editRestaurant)
+router.put('/:id',updateRestaurant)
 router.delete('/:id',deleteRestaurant)
 
 module.exports = router
