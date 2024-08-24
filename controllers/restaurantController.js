@@ -55,3 +55,92 @@ exports.deleteRestaurant = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getNearbyRestaurants = async (req, res) => {
+  try {
+    const { latitude, longitude, radius } = req.body;
+
+    // Parse input values
+    const lat = parseFloat(latitude);
+    const lon = parseFloat(longitude);
+    const rad = parseFloat(radius);
+
+    // Log parsed values for debugging
+    console.log('Parsed Latitude:', lat);
+    console.log('Parsed Longitude:', lon);
+    console.log('Parsed Radius:', rad);
+
+    // Validate inputs
+    if (isNaN(lat) || isNaN(lon) || isNaN(rad)) {
+      return res.status(400).json({ message: 'Invalid latitude, longitude, or radius' });
+    }
+
+    // Find nearby restaurants
+    const restaurants = await Restaurant.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lon, lat]
+          },
+          $maxDistance: rad
+        }
+      }
+    });
+
+    // Respond with restaurant data
+    res.json(restaurants.map(restaurant => ({
+      name: restaurant.name,
+      description: restaurant.description,
+      location: restaurant.location,
+      averageRating: restaurant.ratings.length > 0 
+      ? (restaurant.ratings.reduce((a, b) => a + b, 0) / restaurant.ratings.length).toFixed(2)
+      : 0,    
+      numberOfRatings: restaurant.ratings.length
+    })));
+  } catch (error) {
+    console.error('Error fetching nearby restaurants:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+exports.getRestaurantsInRange = async (req, res) => {
+  try {
+    const { latitude, longitude, minimumDistance, maximumDistance } = req.body;  
+    
+    const lat = parseFloat(latitude);
+    const lon = parseFloat(longitude);
+    const minDist = parseFloat(minimumDistance);
+    const maxDist = parseFloat(maximumDistance);
+
+    if (isNaN(lat) || isNaN(lon) || isNaN(minDist) || isNaN(maxDist)) {
+      return res.status(400).json({ message: 'Invalid latitude, longitude, minimum distance, or maximum distance' });
+    }
+
+    const restaurants = await Restaurant.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [lon, lat]
+          },
+          $minDistance: minDist,
+          $maxDistance: maxDist
+        }
+      }
+    });
+
+    res.json(restaurants.map(restaurant => ({
+      name: restaurant.name,
+      description: restaurant.description,
+      location: restaurant.location,
+      averageRating: restaurant.ratings.length > 0 
+      ? (restaurant.ratings.reduce((a, b) => a + b, 0) / restaurant.ratings.length).toFixed(2)
+      : 0.0,    
+      numberOfRatings: restaurant.ratings.length
+    })));
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
