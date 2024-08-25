@@ -1,4 +1,4 @@
-const Restaurant = require('../models/Restaurants');
+const Restaurant = require('../models/restaurants');
 
 //create Restaurant
 exports.createRestaurants = async (req,res) =>{
