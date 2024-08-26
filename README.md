@@ -25,7 +25,7 @@ This repository contains a Node.js-based restaurant service with authentication 
 
 2. Run the container:
    ```
-   docker run -p 3000:3000 -e MONGODB_URI=your_mongodb_uri -e JWT_SECRET=your_jwt_secret jishnujp/restaurant-api:1.0
+   docker run -p 5000:5000 -e MONGODB_URI=your_mongodb_uri -e JWT_SECRET=your_jwt_secret jishnujp/restaurant-api:1.0
    ```
 
    Replace `your_mongodb_uri` with your MongoDB connection string and `your_jwt_secret` with a secret key for JWT token generation.
@@ -40,7 +40,7 @@ This repository contains a Node.js-based restaurant service with authentication 
      restaurant-service:
        image: jishnujp/restaurants-api:1.0
        ports:
-         - "3000:3000"
+         - "5000:5000"
        environment:
          - MONGODB_URI=your_mongodb_uri
          - JWT_SECRET=your_jwt_secret
@@ -73,7 +73,7 @@ This repository contains a Node.js-based restaurant service with authentication 
 ### Register a User
 
 ```bash
-curl -X POST http://localhost:3000/api/auth/register \
+curl -X POST http://localhost:5000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"username": "testuser", "email": "test@example.com", "password": "password123"}'
 ```
@@ -81,7 +81,7 @@ curl -X POST http://localhost:3000/api/auth/register \
 ### Login
 
 ```bash
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "test@example.com", "password": "password123"}'
 ```
@@ -89,7 +89,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 ### Create a Restaurant
 
 ```bash
-curl -X POST http://localhost:3000/api/restaurants \
+curl -X POST http://localhost:5000/api/restaurants \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"name": "Test Restaurant", "description": "A test restaurant", "location": {"type": "Point", "coordinates": [-73.9667, 40.78]}, "ratings": [4, 5, 3]}'
@@ -98,7 +98,7 @@ curl -X POST http://localhost:3000/api/restaurants \
 ### Get Nearby Restaurants
 
 ```bash
-curl -X GET http://localhost:3000/api/restaurants/nearby \
+curl -X GET http://localhost:5000/api/restaurants/nearby \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"latitude": 40.78, "longitude": -73.9667, "radius": 1000}'
