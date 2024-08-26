@@ -9,6 +9,12 @@ This repository contains a Node.js-based restaurant service with authentication 
 - Geospatial queries to find nearby restaurants
 - Search for restaurants within a specified range
 
+## Live Demo
+
+The service is deployed at: https://restaurants-api-8z9b.onrender.com/
+
+**Note:** As this service is hosted on Render's free tier, it may take a few minutes to load initially. Once loaded, you'll see a "Welcome to Restaurant API" message on the page.
+
 ## Prerequisites
 
 - Docker
@@ -20,7 +26,7 @@ This repository contains a Node.js-based restaurant service with authentication 
 
 1. Pull the Docker image:
    ```
-  docker pull jishnujp/restaurants-api:1.0
+   docker pull jishnujp/restaurants-api:1.0
    ```
 
 2. Run the container:
@@ -53,6 +59,8 @@ This repository contains a Node.js-based restaurant service with authentication 
 
 ## API Endpoints
 
+All endpoints are prefixed with `api/`. For example, `https://restaurants-api-8z9b.onrender.com/api/auth/register`.
+
 ### Authentication
 
 - `POST /api/auth/register`: Register a new user
@@ -70,10 +78,12 @@ This repository contains a Node.js-based restaurant service with authentication 
 
 ## Usage Examples
 
+Replace `http://localhost:5000` with `https://restaurants-api-8z9b.onrender.com` in the following examples to use the deployed service.
+
 ### Register a User
 
 ```bash
-curl -X POST http://localhost:5000/api/auth/register \
+curl -X POST https://restaurants-api-8z9b.onrender.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"username": "testuser", "email": "test@example.com", "password": "password123"}'
 ```
@@ -81,7 +91,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 ### Login
 
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST https://restaurants-api-8z9b.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "test@example.com", "password": "password123"}'
 ```
@@ -89,7 +99,7 @@ curl -X POST http://localhost:5000/api/auth/login \
 ### Create a Restaurant
 
 ```bash
-curl -X POST http://localhost:5000/api/restaurants \
+curl -X POST https://restaurants-api-8z9b.onrender.com/api/restaurants \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"name": "Test Restaurant", "description": "A test restaurant", "location": {"type": "Point", "coordinates": [-73.9667, 40.78]}, "ratings": [4, 5, 3]}'
@@ -98,7 +108,7 @@ curl -X POST http://localhost:5000/api/restaurants \
 ### Get Nearby Restaurants
 
 ```bash
-curl -X GET http://localhost:5000/api/restaurants/nearby \
+curl -X GET https://restaurants-api-8z9b.onrender.com/api/restaurants/nearby \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"latitude": 40.78, "longitude": -73.9667, "radius": 1000}'
